@@ -44,6 +44,7 @@ public class Humidity extends SensorTile {
                 temp = "critical";
                 break;
             default:
+                temp = "disconnected";
         }
         super.updateSensorTile(temp, statusValue);
     }

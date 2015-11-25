@@ -101,7 +101,7 @@ public class MainActivity extends FragmentActivity { //implements HttpManager.Cl
         RealmResults<HubDevice> hubDevices = realm.where(HubDevice.class).findAll();
         if (hubDevices.size() == 0) {
             realm.beginTransaction(); //Start of write transaction
-            for (int i = 0; i < 3; i++) { //Creates 3 pages
+            for (int i = 0; i < 4; i++) { //Creates 3 pages
                 HubDevice data = realm.createObject(HubDevice.class);
                 data.setMachineID("" + i);
                 data.setMachineStatus("running");
@@ -111,7 +111,7 @@ public class MainActivity extends FragmentActivity { //implements HttpManager.Cl
                 data.setVibrationStatus("high");
                 data.setTemperatureStatus("ok");
                 data.setTemperatureValue("25");
-                data.setHumidityStatus("critical");
+                data.setHumidityStatus("critical_low");
                 data.setHumidityValue("78");
 //                data.setEventTimestamp(event_timestamp);
 //                data.setEventStatus(event_status);

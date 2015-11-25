@@ -51,21 +51,25 @@ public class HubMachineFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_hub_machine, container, false);
 
-/*
+        machineInfo = new MachineInfo(getContext());
+        crashDetection = new CrashDetection(getContext());
+        vibration = new Vibration(getContext());
+        temperature = new Temperature(getContext());
+        humidity = new Humidity(getContext());
+
         machineInfo.setMachineInfo(getArguments().getString("machineStatus"),
                 getArguments().getString("machineLocation"),
                 getArguments().getString("machineId"));
-
+/*
 //        programStatus.setProgramStatus(getArguments().getStringArrayList("eventTimestamp"),
 //                getArguments().getStringArrayList("eventStatus"));
-
+*/
         crashDetection.updateSensorTile(getArguments().getString("cdStatus"));
         vibration.updateSensorTile(getArguments().getString("vibrationStatus"));
         temperature.updateSensorTile(getArguments().getString("temperatureStatus"),
                 getArguments().getString("temperatureValue"));
         humidity.updateSensorTile(getArguments().getString("humidityStatus"),
                 getArguments().getString("humidityValue"));
-*/
 
 
         return rootView;
