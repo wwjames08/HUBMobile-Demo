@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">HUB Mobile (Demo)</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_navigation_drawer">NavigationDrawer</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="drawer_open">Drawer Opened</string>
+    <string name="drawer_close">Drawer Closed</string>
+
+    <string-array name="connected_machines">
+        <item>123-321</item>
+        <item>987-789</item>
+    </string-array>
+
+    <string-array name="tempUnitsArray">
+        <item>C°</item>
+        <item>F°</item>
+    </string-array>
+
+</resources>

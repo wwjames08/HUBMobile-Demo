@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#50000000"
+    android:paddingBottom="24dp"
+    android:paddingTop="24dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/machineStatusIcon"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center" />
+
+    <LinearLayout
+        android:id="@+id/machineStatusLocationLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/machineStatusIcon"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/machineStatusLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1.0"
+            android:gravity="right"
+            android:text="Location:"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/machineStatusLocationText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1.0"
+            android:text="n/a"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/machineStatusSerialLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/machineStatusLocationLayout"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/machineStatusSerial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1.0"
+            android:gravity="right"
+            android:text="P/N:"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/machineStatusSerialNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1.0"
+            android:text="n/a"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+</LinearLayout>

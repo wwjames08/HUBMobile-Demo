@@ -1,0 +1,9 @@
+<resources>
+    <!-- the theme applied to the application or activity -->
+    <style name="MyTheme" parent="@android:style/Theme.Material.Light">
+        <item name="android:colorPrimary">#34585C</item>
+        <item name="android:colorPrimaryDark">#243D40</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+    </style>
+
+</resources>
