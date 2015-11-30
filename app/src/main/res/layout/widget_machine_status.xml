@@ -14,15 +14,12 @@
         android:layout_gravity="center" />
 
     <LinearLayout
-        android:id="@+id/machineStatusLocationLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/machineStatusIcon"
         android:layout_marginTop="16dp"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/machineStatusLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
@@ -32,24 +29,20 @@
             android:textColor="#ffffff" />
 
         <TextView
-            android:id="@+id/machineStatusLocationText"
+            android:id="@+id/machineStatusLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_weight="1.0"
             android:text="n/a"
             android:textColor="#ffffff" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/machineStatusSerialLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/machineStatusLocationLayout"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/machineStatusSerial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
@@ -59,10 +52,9 @@
             android:textColor="#ffffff" />
 
         <TextView
-            android:id="@+id/machineStatusSerialNumber"
+            android:id="@+id/machineStatusSerial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_weight="1.0"
             android:text="n/a"
             android:textColor="#ffffff" />

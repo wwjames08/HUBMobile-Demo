@@ -2,15 +2,14 @@ package com.hexagonmetrology.hub.hubmobiledemo.hubMachine;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.hexagonmetrology.hub.hubmobiledemo.R;
-import com.hexagonmetrology.hub.hubmobiledemo.sensorTiles.CrashDetection;
-import com.hexagonmetrology.hub.hubmobiledemo.sensorTiles.Humidity;
-import com.hexagonmetrology.hub.hubmobiledemo.sensorTiles.Temperature;
-import com.hexagonmetrology.hub.hubmobiledemo.sensorTiles.Vibration;
 import com.hexagonmetrology.hub.hubmobiledemo.database.HubDevice;
 
 /**
@@ -19,12 +18,27 @@ import com.hexagonmetrology.hub.hubmobiledemo.database.HubDevice;
  */
 public class HubMachineFragment extends Fragment {
 
-    MachineInfo machineInfo;
-    ProgramStatus programStatus;
-    CrashDetection crashDetection;
-    Vibration vibration;
-    Temperature temperature;
-    Humidity humidity;
+    private final String DEFAULT = "n/a";
+
+    ImageView mMachineStatusIcon;
+    TextView mMachineLocation;
+    TextView mMachineSerial;
+
+    private ProgramStatusAdapter programStatusAdapter;
+    private RecyclerView programStatusRecyclerView;
+
+    View crashDetectionView;
+    TextView mCdStatusText;
+    ImageView mCdStatusRing;
+    View vibrationView;
+    TextView mVibrationStatusText;
+    ImageView mVibrationStatusRing;
+    View temperatureView;
+    TextView mTemperatureStatus;
+    ImageView mTemperatureRing;
+    View humidityView;
+    TextView mHumidityStatus;
+    ImageView mHumidityRing;
 
     public static HubMachineFragment newInstance(HubDevice hubDevice) {
         Bundle bundle = new Bundle();
@@ -51,29 +65,98 @@ public class HubMachineFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_hub_machine, container, false);
 
-        machineInfo = new MachineInfo(getContext());
-        crashDetection = new CrashDetection(getContext());
-        vibration = new Vibration(getContext());
-        temperature = new Temperature(getContext());
-        humidity = new Humidity(getContext());
+        mMachineStatusIcon = (ImageView) rootView.findViewById(R.id.machineStatusIcon);
+        mMachineLocation = (TextView) rootView.findViewById(R.id.machineStatusLocation);
+        mMachineSerial = (TextView) rootView.findViewById(R.id.machineStatusSerial);
 
-        machineInfo.setMachineInfo(getArguments().getString("machineStatus"),
+
+        crashDetectionView = rootView.findViewById(R.id.crashDetectionTile);
+        mCdStatusText = (TextView) crashDetectionView.findViewById(R.id.tileStatusText);
+        mCdStatusRing = (ImageView) crashDetectionView.findViewById(R.id.tileStatusRing);
+
+        vibrationView = rootView.findViewById(R.id.vibrationTile);
+        mVibrationStatusText = (TextView) vibrationView.findViewById(R.id.tileStatusText);
+        mVibrationStatusRing = (ImageView) vibrationView.findViewById(R.id.tileStatusRing);
+
+        temperatureView = rootView.findViewById(R.id.temperatureTile);
+        mTemperatureStatus = (TextView) temperatureView.findViewById(R.id.tileStatusText);
+        mTemperatureRing = (ImageView) temperatureView.findViewById(R.id.tileStatusRing);
+
+        humidityView = rootView.findViewById(R.id.humidityTile);
+        mHumidityStatus = (TextView) humidityView.findViewById(R.id.tileStatusText);
+        mHumidityRing = (ImageView) humidityView.findViewById(R.id.tileStatusRing);
+
+        setMachineInfo(getArguments().getString("machineStatus"),
                 getArguments().getString("machineLocation"),
                 getArguments().getString("machineId"));
-/*
-//        programStatus.setProgramStatus(getArguments().getStringArrayList("eventTimestamp"),
-//                getArguments().getStringArrayList("eventStatus"));
-*/
-        crashDetection.updateSensorTile(getArguments().getString("cdStatus"));
-        vibration.updateSensorTile(getArguments().getString("vibrationStatus"));
-        temperature.updateSensorTile(getArguments().getString("temperatureStatus"),
-                getArguments().getString("temperatureValue"));
-        humidity.updateSensorTile(getArguments().getString("humidityStatus"),
-                getArguments().getString("humidityValue"));
 
-
+        mCdStatusText.setText(getArguments().getString("cdStatus", DEFAULT));
+        mCdStatusRing.setImageResource(R.drawable.st_green_ring);
         return rootView;
     }// end onCreate()
+
+
+    /* Machine Info */
+    private void setMachineInfo(String machineStatus, String machineLocation, String machineText){
+
+        setMachineStatus(machineStatus);
+        mMachineLocation.setText(getArguments().getString("machineLocation", DEFAULT));
+        mMachineSerial.setText(getArguments().getString("machineId", DEFAULT));
+    }
+
+    /* Setting the Machine Status Icon and Text Status */
+    private void setMachineStatus(String machineStatus) {
+        // Changes the ImageView depending on the Machine Status received
+        switch (machineStatus) {
+            case "idle":
+                mMachineStatusIcon.setImageResource(R.drawable.ms_idle);
+                break;
+            case "running":
+                mMachineStatusIcon.setImageResource(R.drawable.ms_running);
+                break;
+            case "warning":
+                mMachineStatusIcon.setImageResource(R.drawable.ms_warning);
+                break;
+            case "critical":
+                mMachineStatusIcon.setImageResource(R.drawable.ms_error);
+                break;
+            case "disconnected":
+                mMachineStatusIcon.setImageResource(R.drawable.ms_offline);
+                break;
+            default:
+                mMachineStatusIcon.setImageResource(R.drawable.ms_offline);
+        }
+
+
+        /* Program Status */
+
+
+/*        programStatusRecyclerView = (RecyclerView) findViewById(R.id.event_history_list);
+        programStatusAdapter = new ProgramStatusAdapter();
+        programStatusRecyclerView.setAdapter(programStatusAdapter);
+        programStatusRecyclerView.setLayoutManager(new LinearLayoutManager(context));*/
+
+        /* Sensor Tiles */
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 

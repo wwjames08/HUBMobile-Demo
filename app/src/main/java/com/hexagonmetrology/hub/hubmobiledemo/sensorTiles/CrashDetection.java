@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import com.hexagonmetrology.hub.hubmobiledemo.R;
 
 /**
- * Created by Jimmy.LI on 11/21/2015.
+ * Creates the Crash Detection sensor tile
  */
 public class CrashDetection extends SensorTile {
 

@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.hexagonmetrology.hub.hubmobiledemo.database.HubDevice;
 
@@ -16,6 +18,7 @@ import java.util.List;
  */
 public class ConnectedMachineAdapter extends RecyclerView.Adapter<ConnectedMachineAdapter.ViewHolder> {
 
+    View connectedMachine;
     List<HubDevice> hubDevices = new ArrayList<>();
 
     public ConnectedMachineAdapter() {
@@ -47,12 +50,24 @@ public class ConnectedMachineAdapter extends RecyclerView.Adapter<ConnectedMachi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        HubDevice data = hubDevices.get(position);
+        ImageView icon = (ImageView) connectedMachine.findViewById(R.id.connectedMachineIcon);
+        TextView type = (TextView) connectedMachine.findViewById(R.id.connectedMachineType);
+        TextView location = (TextView) connectedMachine.findViewById(R.id.connectedMachineLocation);
+        TextView serial = (TextView) connectedMachine.findViewById(R.id.connectedMachineSerial);
+        ImageView status = (ImageView) connectedMachine.findViewById(R.id.connectedMachineStatus);
 
+        icon.setImageResource(R.drawable.icon_7107);
+        type.setText(data.getMachineType());
+        location.setText(data.getMachineLocation());
+        serial.setText(data.getMachineID());
+        status.setImageResource(R.drawable.ic_idle);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder(View itemView) {
             super(itemView);
+            connectedMachine = itemView;
         }
     }
 
@@ -60,4 +75,5 @@ public class ConnectedMachineAdapter extends RecyclerView.Adapter<ConnectedMachi
         this.hubDevices = hubDevices;
         notifyDataSetChanged();
     }
+
 }
