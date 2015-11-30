@@ -39,9 +39,8 @@ public class ConnectedMachineAdapter extends RecyclerView.Adapter<ConnectedMachi
     }
 
     /**
-     * Gets the size of the array of data
-     *
-     * @return
+     * List the number of connected machines
+     * @return the number of connected machines
      */
     @Override
     public int getItemCount() {
