@@ -47,6 +47,11 @@ public class ConnectedMachineAdapter extends RecyclerView.Adapter<ConnectedMachi
         return hubDevices.size();
     }
 
+    /**
+     * This is where you bind the data to the recyclerview.
+     * @param holder updates the contents of the item at the given position in the data set.
+     * @param position the position of the item within the adapter's data set.
+     */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         HubDevice data = hubDevices.get(position);
