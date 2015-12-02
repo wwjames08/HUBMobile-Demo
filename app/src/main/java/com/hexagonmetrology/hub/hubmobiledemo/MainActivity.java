@@ -15,7 +15,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.hexagonmetrology.hub.hubmobiledemo.database.DataManager;
 import com.hexagonmetrology.hub.hubmobiledemo.database.HubDevice;
 import com.hexagonmetrology.hub.hubmobiledemo.hubMachine.HubMachineFragment;
 import com.hexagonmetrology.hub.hubmobiledemo.settings.Settings;
@@ -31,28 +30,23 @@ import io.realm.RealmResults;
  */
 public class MainActivity extends FragmentActivity { //implements HttpManager.CloudCallback
 
+    /* Database instance */
     private Realm realm;
-    private DataManager data;
+
+    /* Navigation Drawer */
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
 
+    /* Adapters */
     private ConnectedMachineAdapter connectedMachineAdapter;
     private RecyclerView connectedMachineRecyclerView;
 
-    private static final int NUM_PAGES = 1; //The number of pages to shown.
-    /**
-     * The pager widget, which handles animation and allows swiping horizontally to access previous
-     * and next wizard steps.
-     */
-    private ViewPager mPager;
-    /**
-     * The pager adapter, which provides the pages to the view pager widget.
-     */
-    private HubMachineAdapter mPagerAdapter;
+    /* ViewPager */
+    private ViewPager mPager; //Widget; handles animation and allows swiping horizontally
+    private HubMachinePagerAdapter mPagerAdapter; //Adapter; provides the pages to the view pager widget
 
     /**
      * Start of application
-     *
      * @param savedInstanceState
      */
     @Override
@@ -60,43 +54,20 @@ public class MainActivity extends FragmentActivity { //implements HttpManager.Cl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /**
-         * Instantiate a ViewPager and a PagerAdapter of connected
-         * machines for the user to scroll through horizontally
-         */
-        mPager = (ViewPager) findViewById(R.id.hubMachinePager);
-        mPagerAdapter = new HubMachineAdapter(getSupportFragmentManager());
+        /* Instantiate a ViewPager and a PagerAdapter of connected
+           machines for the user to scroll through horizontally */
+        mPager = (ViewPager) findViewById(R.id.viewPager);
+        mPagerAdapter = new HubMachinePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
 
-        /**
-         * Creates the RecyclerView and Adapter for the list of connected
-         * machines in the navigational drawer
-         */
+        /* Creates the RecyclerView and Adapter for the list of connected
+           machines in the navigational drawer */
         connectedMachineRecyclerView = (RecyclerView) findViewById(R.id.connectedMachinesList);
         connectedMachineAdapter = new ConnectedMachineAdapter();
         connectedMachineRecyclerView.setAdapter(connectedMachineAdapter);
         connectedMachineRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        /**
-         * Sets each page of pageview to their respective unique machine ID
-         */
-/*        realm = Realm.getInstance(this);
-        //Realm.deleteRealm(realm.getConfiguration());
-        RealmResults<MockMachine> mockMachine = realm.where(MockMachine.class).findAll();
-        //Checks if there's machine data
-        if(mockMachine.size() == 0){ //If no machine data, populate it
-            realm.beginTransaction(); //Start of write transaction
-            for(int i = 0; i < 3; i++){ //Creates 3 pages
-                MockMachine data = realm.createObject(MockMachine.class);
-                data.setMachineID("" + i);
-            }
-            realm.commitTransaction(); //End of write transaction, committing changes/updates
-            super.onCreate(savedInstanceState);
-        }
-        else{
-            mPagerAdapter.setData(mockMachine);
-            connectedMachineAdapter.setData(mockMachine);
-        }*/
+        /* Creates HubDevice objects for the database */
         realm = Realm.getInstance(this);
         RealmResults<HubDevice> hubDevices = realm.where(HubDevice.class).findAll();
         if (hubDevices.size() == 0) {
@@ -123,21 +94,20 @@ public class MainActivity extends FragmentActivity { //implements HttpManager.Cl
             connectedMachineAdapter.setData(hubDevices);
         }
 
-
-        /*Navigation Drawer toggle*/
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        /* Navigation Drawer toggle*/
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,             /* host Activity */
                 mDrawerLayout,    /* DrawerLayout object */
                 R.string.drawer_open,  /* "open drawer" description */
                 R.string.drawer_close   /* "close drawer" description */
         ) {
-            /* Called when a drawer has settled in a completely closed state. */
+            /* Closes navigation drawer */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
             }
 
-            /* Called when a drawer has settled in a completely open state. */
+            /* Open navigation drawer */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
             }
@@ -145,6 +115,7 @@ public class MainActivity extends FragmentActivity { //implements HttpManager.Cl
 
         mDrawerLayout.setDrawerListener(mDrawerToggle); // Set the drawer toggle as the DrawerListener
 
+        /* Shows the navigation drawer button */
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -172,56 +143,37 @@ public class MainActivity extends FragmentActivity { //implements HttpManager.Cl
         return super.onOptionsItemSelected(item);
     }
 
-/*    @Override
-    public void received(final DataManager dataManager) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                machineInfo.setupMachineInfo(dataManager);
-            }
-        });
-    }*/
-
     /**
-     * For viewpager
+     * When back button is pressed: closes the navigation drawer
+     * or goes back a page in the ViewPager.
      */
-    /* For when user hits the back button */
     @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else if (mPager.getCurrentItem() != 0) {
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-        } /*else if (mPager.getCurrentItem() == 0) {
-            if (count == 0){
-                Toast.makeText(getApplication(), "Press back again to exit.",
-                        Toast.LENGTH_SHORT).show();
-                count++;
-            }else if (count == 1) {
-                super.onBackPressed();
-            }
-        }*/ //To exit application on two back press
+        }
     }
 
     /**
      * A simple pager adapter that represents the HubMachineFragment objects, in
      * sequence.
      */
-    private class HubMachineAdapter extends FragmentPagerAdapter {
-        public HubMachineAdapter(android.support.v4.app.FragmentManager fm) {
+    private class HubMachinePagerAdapter extends FragmentPagerAdapter {
+        public HubMachinePagerAdapter(android.support.v4.app.FragmentManager fm) {
             super(fm);
         }
 
         /* This is where the array of connected machine data
          * is applied to a list for the adapter
          */
-        List<HubDevice> data = new ArrayList<>();//data is the individual object
+        List<HubDevice> data = new ArrayList<>();
 
         /**
-         * Displays the connected machine based on the position
-         * of the adapter
-         *
-         * @param position position in the recyclerview
+         * Creates the HubMachineFragement at the current
+         * position of the ViewPager
+         * @param position position in the ViewPager
          * @return the Fragment associated with a specified position
          */
         @Override
@@ -230,11 +182,9 @@ public class MainActivity extends FragmentActivity { //implements HttpManager.Cl
         }
 
         /**
-         * Gets the size of the array list holding the
-         * connecting machine (The amount of machines
-         * that are connected)
-         *
-         * @return the number of views available.
+         * Creates the number of pages based on the
+         * size of the connected machine list array.
+         * @return the size of the connected machine array
          */
         @Override
         public int getCount() {
@@ -246,7 +196,6 @@ public class MainActivity extends FragmentActivity { //implements HttpManager.Cl
             notifyDataSetChanged();
         }
     }
-
 
     /**
      * Other Stuff
