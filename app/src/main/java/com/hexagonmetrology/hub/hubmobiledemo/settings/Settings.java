@@ -34,7 +34,14 @@ public class Settings extends Activity {
         settings = getSharedPreferences(APP_PREFS, 0);
         editor = settings.edit();
 
-        if (tempUnit.getText().toString() == null) {
+        if(tempUnit.getText().toString() == null){
+            tempUnit.setText(settings.getString("tempUnit", null));
+            String t = tempUnit.getText().toString();
+            if(t == "C°"){
+                mNumber = 1;
+            }
+        }
+      /*  if (tempUnit.getText().toString() == null) {
             mNumber = 0;
             tempUnit.setText("C°");
         } else {
@@ -45,7 +52,7 @@ public class Settings extends Activity {
             if (tempUnit.getText().toString() == "F°") {
                 mNumber = 1;
             }
-        }
+        }*/
     }
 
     public void openNotification(View view) {

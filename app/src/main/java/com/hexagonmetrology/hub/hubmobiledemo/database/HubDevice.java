@@ -4,7 +4,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
- * Created by jimmy.li on 11/24/2015.
+ *
  */
 public class HubDevice extends RealmObject {
 
@@ -12,17 +12,15 @@ public class HubDevice extends RealmObject {
     private String machineID;
 
     private String machineStatus,
-            machineType,
-            machineLocation,
-            cdStatus,
-            vibrationStatus,
-            temperatureStatus,
-            temperatureValue,
-            humidityStatus,
-            humidityValue;
+                    machineType,
+                    machineLocation,
+                    cdStatus,
+                    vibrationStatus,
+                    temperatureStatus,
+                    temperatureValue,
+                    humidityStatus,
+                    humidityValue;
 
-    /*private List<String> eventTimestamp,
-                            eventStatus;*/
 
     public String getMachineID() {
         return machineID;
@@ -103,20 +101,4 @@ public class HubDevice extends RealmObject {
     public void setHumidityValue(String humidityValue) {
         this.humidityValue = humidityValue;
     }
-
-  /*  public List<String> getEventTimestamp() {
-        return eventTimestamp;
-    }
-
-    public void setEventTimestamp(List<String> eventTimestamp) {
-        this.eventTimestamp = eventTimestamp;
-    }
-
-    public List<String> getEventStatus() {
-        return eventStatus;
-    }
-
-    public void setEventStatus(List<String> eventStatus) {
-        this.eventStatus = eventStatus;
-    }*/
 }

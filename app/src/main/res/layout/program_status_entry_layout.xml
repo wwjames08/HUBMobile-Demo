@@ -9,13 +9,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="time_stamp" />
+        android:text="time_stamp"
+        android:textColor="#ffffff"/>
 
     <TextView
         android:id="@+id/program_status_event"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="program_event" />
+        android:text="program_event"
+        android:textColor="#ffffff"/>
 
 </LinearLayout>

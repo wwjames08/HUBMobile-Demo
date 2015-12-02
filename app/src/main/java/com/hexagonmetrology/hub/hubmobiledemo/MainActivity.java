@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.hexagonmetrology.hub.hubmobiledemo.database.EventHistory;
 import com.hexagonmetrology.hub.hubmobiledemo.database.HubDevice;
 import com.hexagonmetrology.hub.hubmobiledemo.hubMachine.HubMachineFragment;
 import com.hexagonmetrology.hub.hubmobiledemo.settings.Settings;
@@ -23,12 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 /**
  * Start of the application and where everything goes through
  */
-public class MainActivity extends FragmentActivity { //implements HttpManager.CloudCallback
+public class MainActivity extends FragmentActivity {
 
     /* Database instance */
     private Realm realm;
@@ -53,6 +55,8 @@ public class MainActivity extends FragmentActivity { //implements HttpManager.Cl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
+        Realm.setDefaultConfiguration(realmConfiguration);
 
         /* Instantiate a ViewPager and a PagerAdapter of connected
            machines for the user to scroll through horizontally */
@@ -70,6 +74,7 @@ public class MainActivity extends FragmentActivity { //implements HttpManager.Cl
         /* Creates HubDevice objects for the database */
         realm = Realm.getInstance(this);
         RealmResults<HubDevice> hubDevices = realm.where(HubDevice.class).findAll();
+        RealmResults<EventHistory> eventHistories = realm.where(EventHistory.class).findAll();
         if (hubDevices.size() == 0) {
             realm.beginTransaction(); //Start of write transaction
             for (int i = 0; i < 4; i++) { //Creates 3 pages
@@ -82,11 +87,18 @@ public class MainActivity extends FragmentActivity { //implements HttpManager.Cl
                 data.setVibrationStatus("high");
                 data.setTemperatureStatus("ok");
                 data.setTemperatureValue("25");
-                data.setHumidityStatus("critical_low");
+                data.setHumidityStatus("warning_low");
                 data.setHumidityValue("78");
-//                data.setEventTimestamp(event_timestamp);
-//                data.setEventStatus(event_status);
+     /*           if(eventHistories.size() == 0) {
+                    for (int j = 0; j < 5; j++) {
+                        EventHistory eventHistory = realm.createObject(EventHistory.class);
+                        eventHistory.setTimeStamp("12:" + i * 10 + j + ":00pm");
+                        eventHistory.setStatusEvent("Program Running");
+                        data.getEventHistories().add(eventHistory);
+                    }
+                }*/
             }
+
             realm.commitTransaction(); //End of write transaction, committing changes/updates
             super.onCreate(savedInstanceState);
         } else {
@@ -156,6 +168,12 @@ public class MainActivity extends FragmentActivity { //implements HttpManager.Cl
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close();
+    }
+
     /**
      * A simple pager adapter that represents the HubMachineFragment objects, in
      * sequence.
@@ -196,6 +214,32 @@ public class MainActivity extends FragmentActivity { //implements HttpManager.Cl
             notifyDataSetChanged();
         }
     }
+
+    /*************************************Realm Stuff*******************************************/
+
+    private void addHubDevice(String id, String location, String type){
+        realm.beginTransaction();
+
+        HubDevice hubDevice = realm.createObject(HubDevice.class);
+        hubDevice.setMachineID(id);
+        hubDevice.setMachineLocation(location);
+        hubDevice.setMachineType(type);
+
+
+        realm.commitTransaction();
+    }
+
+    private void updateHubDevice(int position){
+
+    }
+
+    private void deleteHubDevice(int position){
+
+    }
+
+
+    /**************************************Realm End******************************************/
+
 
     /**
      * Other Stuff

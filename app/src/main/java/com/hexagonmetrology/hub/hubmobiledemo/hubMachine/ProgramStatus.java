@@ -11,6 +11,7 @@ import com.hexagonmetrology.hub.hubmobiledemo.R;
  * Creates the Program Status widget
  */
 public class ProgramStatus extends FrameLayout {
+
     public ProgramStatus(Context context) {
         super(context);
         initLayout(context);

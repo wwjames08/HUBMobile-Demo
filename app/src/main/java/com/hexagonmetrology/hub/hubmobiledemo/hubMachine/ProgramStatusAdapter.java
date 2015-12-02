@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.hexagonmetrology.hub.hubmobiledemo.R;
 
@@ -15,6 +16,7 @@ import java.util.List;
  */
 public class ProgramStatusAdapter extends RecyclerView.Adapter<ProgramStatusAdapter.ViewHolder> {
 
+    View programStatusList;
     List<String> timeStamps = new ArrayList<>();
     List<String> programEvents = new ArrayList<>();
 
@@ -44,16 +46,25 @@ public class ProgramStatusAdapter extends RecyclerView.Adapter<ProgramStatusAdap
      */
     @Override
     public int getItemCount() {
-        return timeStamps.size();
+        return 5;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        TextView timeStamp = (TextView) programStatusList.findViewById(R.id.program_status_timestamp);
+        TextView eventStatus = (TextView) programStatusList.findViewById(R.id.program_status_event);
+
+        timeStamp.setText("12:00:00PM");
+        eventStatus.setText("Program Running");
+
+//        timeStamp.setText(timeStamps.get(position).toString());
+//        eventStatus.setText(programEvents.get(position).toString());
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder(View itemView) {
             super(itemView);
+            programStatusList = itemView;
         }
     }
 
