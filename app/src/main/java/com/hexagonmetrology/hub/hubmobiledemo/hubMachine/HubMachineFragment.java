@@ -86,9 +86,9 @@ public class HubMachineFragment extends Fragment {
         mHumidityStatus = (TextView) humidityView.findViewById(R.id.tileStatusText);
         mHumidityRing = (ImageView) humidityView.findViewById(R.id.tileStatusRing);
 
-        setMachineInfo(getArguments().getString("machineStatus"),
-                getArguments().getString("machineLocation"),
-                getArguments().getString("machineId"));
+        setMachineInfo(getArguments().getString("machineStatus", "disconnected"),
+                getArguments().getString("machineLocation", DEFAULT),
+                getArguments().getString("machineId", DEFAULT));
 
         mCdStatusText.setText(getArguments().getString("cdStatus", DEFAULT));
         mCdStatusRing.setImageResource(R.drawable.st_green_ring);
@@ -100,8 +100,8 @@ public class HubMachineFragment extends Fragment {
     private void setMachineInfo(String machineStatus, String machineLocation, String machineText){
 
         setMachineStatus(machineStatus);
-        mMachineLocation.setText(getArguments().getString("machineLocation", DEFAULT));
-        mMachineSerial.setText(getArguments().getString("machineId", DEFAULT));
+        mMachineLocation.setText(machineLocation);
+        mMachineSerial.setText(machineText);
     }
 
     /* Setting the Machine Status Icon and Text Status */
