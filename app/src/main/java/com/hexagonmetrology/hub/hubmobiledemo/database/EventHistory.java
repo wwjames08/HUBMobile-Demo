@@ -4,7 +4,9 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
- * Created by jimmy.li on 12/2/2015.
+ * This class is a Realm Object that will store
+ * the data for each timestamp and program status
+ * event of the connected machine.
  */
 public class EventHistory extends RealmObject {
 

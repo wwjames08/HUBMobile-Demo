@@ -3,7 +3,6 @@ package com.hexagonmetrology.hub.hubmobiledemo.hubMachine;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,10 @@ import android.widget.TextView;
 
 import com.hexagonmetrology.hub.hubmobiledemo.R;
 import com.hexagonmetrology.hub.hubmobiledemo.database.HubDevice;
+import com.hexagonmetrology.hub.hubmobiledemo.sensorTiles.CrashDetection;
+import com.hexagonmetrology.hub.hubmobiledemo.sensorTiles.Humidity;
+import com.hexagonmetrology.hub.hubmobiledemo.sensorTiles.Temperature;
+import com.hexagonmetrology.hub.hubmobiledemo.sensorTiles.Vibration;
 
 /**
  * Fragment: Creates and handles the layout of a connected machine
@@ -46,6 +49,12 @@ public class HubMachineFragment extends Fragment {
     View humidityView;
     TextView mHumidityStatus;
     ImageView mHumidityRing;
+
+    MachineInfo machineInfo;
+    CrashDetection cdTile;
+    Vibration vTile;
+    Temperature tTile;
+    Humidity hTile;
 
 //    static ArrayList<String> timeStamps = new ArrayList<>(),
 //                             eventStatuses = new ArrayList<>();
@@ -82,47 +91,14 @@ public class HubMachineFragment extends Fragment {
         settings = getActivity().getSharedPreferences(APP_PREFS, 0);
         editor = settings.edit();
 
-        mMachineStatusIcon = (ImageView) rootView.findViewById(R.id.machineStatusIcon);
-        mMachineLocation = (TextView) rootView.findViewById(R.id.machineStatusLocation);
-        mMachineSerial = (TextView) rootView.findViewById(R.id.machineStatusSerial);
+        machineInfo = new MachineInfo(getContext());
+        cdTile = new CrashDetection(getContext());
+        vTile = new Vibration(getContext());
+        tTile = new Temperature(getContext());
+        hTile = new Humidity(getContext());
 
-        programStatusRecyclerView = (RecyclerView) rootView.findViewById(R.id.event_history_list);
-        programStatusAdapter = new ProgramStatusAdapter();
-        programStatusRecyclerView.setAdapter(programStatusAdapter);
-        programStatusRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+       // cdTile.updateSensorTile(getArguments().get);
 
-        crashDetectionView = rootView.findViewById(R.id.crashDetectionTile);
-        mCdStatusText = (TextView) crashDetectionView.findViewById(R.id.tileStatusText);
-        mCdStatusRing = (ImageView) crashDetectionView.findViewById(R.id.tileStatusRing);
-
-        vibrationView = rootView.findViewById(R.id.vibrationTile);
-        mVibrationStatusText = (TextView) vibrationView.findViewById(R.id.tileStatusText);
-        mVibrationStatusRing = (ImageView) vibrationView.findViewById(R.id.tileStatusRing);
-
-        temperatureView = rootView.findViewById(R.id.temperatureTile);
-        mTemperatureStatus = (TextView) temperatureView.findViewById(R.id.tileStatusText);
-        mTemperatureRing = (ImageView) temperatureView.findViewById(R.id.tileStatusRing);
-        mTemperatureUnit = (TextView) temperatureView.findViewById(R.id.tileUnitText);
-
-        humidityView = rootView.findViewById(R.id.humidityTile);
-        mHumidityStatus = (TextView) humidityView.findViewById(R.id.tileStatusText);
-        mHumidityRing = (ImageView) humidityView.findViewById(R.id.tileStatusRing);
-
-        setMachineInfo(getArguments().getString("machineStatus", "disconnected"),
-                getArguments().getString("machineLocation", DEFAULT),
-                getArguments().getString("machineId", DEFAULT));
-
-        programStatusAdapter.setData(getArguments().getStringArrayList("eventTimestamp"),
-                getArguments().getStringArrayList("eventStatus"));
-
-        setSensorTiles(getArguments().getString("cdStatus", DEFAULT),
-                getArguments().getString("vibrationStatus", DEFAULT),
-                getArguments().getString("temperatureValue", DEFAULT),
-                getArguments().getString("temperatureStatus", DEFAULT),
-                getArguments().getString("humidityValue", DEFAULT),
-                getArguments().getString("humidityStatus", DEFAULT));
-
-        mTemperatureUnit.setText(settings.getString("tempUnit", "°C"));
         return rootView;
     }// end onCreate()
 
@@ -158,20 +134,6 @@ public class HubMachineFragment extends Fragment {
         }
     }
         /* Program Status */
-
-
-
-
-        /* Sensor Tiles */
-
-    private void setSensorTiles(String cdStatus, String vibrationStatus,
-                                String temperatureValue, String temperatureStatus,
-                                String humidityValue, String humidityStatus){
-        setCdTileStatus(cdStatus);
-        setVibrationTileStatus(vibrationStatus);
-        setTemperatureTileStatus(temperatureValue, temperatureStatus);
-        setHumidityTileStatus(humidityValue, humidityStatus);
-    }
 
     private void setCdTileStatus(String cdStatus){
         mCdStatusText.setText(String.format("%s%s", cdStatus.substring(0, 1).toUpperCase(), cdStatus.substring(1)));

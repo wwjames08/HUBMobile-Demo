@@ -9,32 +9,35 @@ import android.widget.TextView;
 
 import com.hexagonmetrology.hub.hubmobiledemo.R;
 
+/**
+ * This is the parent class for all Sensor tiles
+ */
 public class SensorTile extends FrameLayout {
 
+    //Declare references for all the views in the tile
     private TextView sensorTileTitle;
     private ImageView sensorTileIcon;
     private ImageView sensorTileStatusRing;
     private TextView sensorTileStatusText;
     private TextView sensorTileUnitText;
 
-    public SensorTile(Context context) {
+    protected SensorTile(Context context) {
         super(context);
         initLayout(context);
     }
 
-    public SensorTile(Context context, AttributeSet attrs) {
+    protected SensorTile(Context context, AttributeSet attrs) {
         super(context, attrs);
         initLayout(context);
     }
 
-    public SensorTile(Context context, AttributeSet attrs, int defStyle) {
+    protected SensorTile(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initLayout(context);
     }
 
     /**
      * Initializes the sensor tile
-     *
      * @param context
      */
     private void initLayout(Context context) {
@@ -42,6 +45,7 @@ public class SensorTile extends FrameLayout {
                 Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.widget_sensor_tile, this);
 
+        //Assign references to their views in the XML
         sensorTileTitle = (TextView) findViewById(R.id.tileTitle);
         sensorTileIcon = (ImageView) findViewById(R.id.tileStatusIcon);
         sensorTileStatusRing = (ImageView) findViewById(R.id.tileStatusRing);
@@ -50,83 +54,43 @@ public class SensorTile extends FrameLayout {
     }
 
     /**
-     * For setting up sensor tiles without unit text
+     * Setup the sensor tile
+     * @param tileTitle tile's title
+     * @param tileIcon tile's icon (resource id)
+     * @param tileUnitText tile's unit (if applicable)
+     * @param tileStatusRing tile's ring color status (resource id)
+     * @param tileStatusText tile's status text
      */
-    public void setupSensorTile(String tileTitle, int tileIcon) {
+    protected void setupSensorTile(String tileTitle,
+                                   int tileIcon,
+                                   String tileUnitText,
+                                   int tileStatusRing,
+                                   String tileStatusText) {
         sensorTileTitle.setText(tileTitle);
         sensorTileIcon.setImageResource(tileIcon);
-        setSensorTileRing("grey");
-        setSensorTileStatusText("disconnected");
+        sensorTileStatusRing.setImageResource(tileStatusRing);
+        sensorTileStatusText.setText(tileStatusText.substring(0, 1).toUpperCase()
+                + tileStatusText.substring(1));
+        sensorTileUnitText.setText(tileUnitText);
     }
 
     /**
-     * For setting up sensor tiles with unit text
-     */
-    public void setupSensorTile(String tileTitle, int tileIcon, String tileUnitText) {
-        sensorTileTitle.setText(tileTitle);
-        sensorTileIcon.setImageResource(tileIcon);
-        setSensorTileRing("grey");
-        setSensorTileStatusText("disconnected");
-        setSensorTileUnitText(tileUnitText);
-    }
-
-    /**
+     * Sets the sensor tile's ring color and text
      * @param ringStatus color to change to
      * @param textStatus text to change to
      */
-    protected void updateSensorTile(String ringStatus, String textStatus) {
-        setSensorTileRing(ringStatus);
-        setSensorTileStatusText(textStatus);
+    protected void setSensorTile(int ringStatus, String textStatus) {
+        sensorTileStatusRing.setImageResource(ringStatus);
+        sensorTileStatusText.setText(textStatus.substring(0, 1).toUpperCase()
+                        + textStatus.substring(1));
     }
 
-    /**
-     * Sets sensor tile status textfield
-     *
-     * @param tileStatusText sensor tile status
-     */
-    private void setSensorTileStatusText(String tileStatusText) {
-        sensorTileStatusText.setText(tileStatusText.substring(0, 1).toUpperCase()
-                + tileStatusText.substring(1));
-    }
-
-    /**
-     * Sets sensor tile status ring color
-     *
-     * @param sensorStatus status of sensor
-     */
-    private void setSensorTileRing(String sensorStatus) {
-        switch (sensorStatus) {
-            case "idle":
-                sensorTileStatusRing.setImageResource(R.drawable.st_blue_ring);
-                break;
-            case "warning":
-                sensorTileStatusRing.setImageResource(R.drawable.st_yellow_ring);
-                break;
-            case "critical":
-                sensorTileStatusRing.setImageResource(R.drawable.st_red_ring);
-                break;
-            case "disconnected":
-                sensorTileStatusRing.setImageResource(R.drawable.st_gray_ring);
-                break;
-            default:
-                sensorTileStatusRing.setImageResource(R.drawable.st_gray_ring);
-                break;
-        }
-    }
 
     /**
      * Sets sensor tile unit textfield
-     *
      * @param unitText sensor tile unit text
      */
     protected void setSensorTileUnitText(String unitText) {
-        sensorTileUnitText.setText(unitText);
-    }
-
-    /**
-     * @return sensor tile unit textfield value
-     */
-    protected String getSensorTileUnitText() {
-        return sensorTileUnitText.getText().toString();
+        sensorTileUnitText.setText(unitText.toUpperCase());
     }
 }

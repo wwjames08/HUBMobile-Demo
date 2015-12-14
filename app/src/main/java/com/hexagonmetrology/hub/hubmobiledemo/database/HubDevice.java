@@ -4,7 +4,8 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
- *
+ *This class is a Realm Object that will store the
+ * data for each connected machine
  */
 public class HubDevice extends RealmObject {
 

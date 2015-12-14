@@ -1,78 +1,68 @@
 package com.hexagonmetrology.hub.hubmobiledemo.sensorTiles;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.AttributeSet;
 
 import com.hexagonmetrology.hub.hubmobiledemo.R;
 
 /**
- * Created by Jimmy.LI on 11/21/2015.
+ * Creates the Temperature sensor tile
  */
 public class Temperature extends SensorTile {
 
     private final String TITLE = "Temperature";
     private final int ICON = R.drawable.temperature_icon;
-    private String unitText = "°C";
+    private final String UNIT_TEXT = "°C";
+    private final int DEFAULT_RING = R.drawable.st_gray_ring;
+    private final String DEFAULT_TEXT = "Disconnected";
 
-    public static final String APP_PREFS = "applicationPrefs";
-    SharedPreferences settings;
 
     public Temperature(Context context) {
         super(context);
-        super.setupSensorTile(TITLE, ICON, unitText);
-
-        settings = context.getSharedPreferences(APP_PREFS, 0);
+        super.setupSensorTile(TITLE, ICON, UNIT_TEXT, DEFAULT_RING, DEFAULT_TEXT);
     }
 
     public Temperature(Context context, AttributeSet attrs) {
         super(context, attrs);
-        super.setupSensorTile(TITLE, ICON, unitText);
-
-        settings = context.getSharedPreferences(APP_PREFS, 0);
+        super.setupSensorTile(TITLE, ICON, UNIT_TEXT, DEFAULT_RING, DEFAULT_TEXT);
     }
 
     public Temperature(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        super.setupSensorTile(TITLE, ICON, unitText);
-
-        settings = context.getSharedPreferences(APP_PREFS, 0);
-    }
-
-
-    public void updateSensorTile(String status, String statusValue) {
-        String temp = null;
-        switch (status) {
-            case "ok":
-                temp = "idle";
-                break;
-            case "warning_low":
-            case "warning_high":
-                temp = "warning";
-                break;
-            case "critical_low":
-            case "critical_high":
-            case "1hr_swing":
-            case "24hr_swing":
-                temp = "critical";
-                break;
-            default:
-                temp = "disconnected";
-        }
-        super.updateSensorTile(temp, statusValue);
+        super.setupSensorTile(TITLE, ICON, UNIT_TEXT, DEFAULT_RING, DEFAULT_TEXT);
     }
 
     /**
-     * Flips the sensor tile temperature unit
-     * between F and C
+     * Updates the sensor tile's ring color and text status
+     * @param ringStatus updated resource id for ring color
+     * @param textStatus updated text for the text field
      */
-    protected void changeTemperatureUnitText() {
-        if (getSensorTileUnitText() == "°F") {
-            unitText = "°C";
-            setSensorTileUnitText(unitText);
-        } else if (getSensorTileUnitText() == "°C") {
-            unitText = "°F";
-            setSensorTileUnitText(unitText);
-        }
+    public void updateSensorTile(int ringStatus, String textStatus) {
+//        String status = null;
+//        switch (textStatus) {
+//            case "ok":
+//                status = "idle";
+//                break;
+//            case "warning_low":
+//            case "warning_high":
+//                status = "warning";
+//                break;
+//            case "critical_low":
+//            case "critical_high":
+//            case "1hr_swing":
+//            case "24hr_swing":
+//                status = "critical";
+//                break;
+//            default:
+//                status = "disconnected";
+//        }
+        super.setSensorTile(ringStatus, textStatus);
+    }
+
+    /**
+     * Sets the Unit text of the tile
+     */
+    public void setUnitText(String newUnit) {
+       super.setSensorTileUnitText(newUnit);
     }
 }
