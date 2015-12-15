@@ -3,6 +3,7 @@ package com.hexagonmetrology.hub.hubmobiledemo.hubMachine;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,10 @@ public class HubMachineFragment extends Fragment {
     SharedPreferences.Editor editor;
 
     final String DEFAULT = "n/a";
+
+    ImageView mMachineStatusIcon;
+    TextView mMachineLocation;
+    TextView mMachineSerial;
 
     ProgramStatusAdapter programStatusAdapter;
     RecyclerView programStatusRecyclerView;
@@ -84,19 +89,35 @@ public class HubMachineFragment extends Fragment {
         settings = getActivity().getSharedPreferences(APP_PREFS, 0);
         editor = settings.edit();
 
-        machineInfo = new MachineInfo(rootView.getContext());
-        cdTile = new CrashDetection(getContext());
-        vTile = new Vibration(getContext());
-        tTile = new Temperature(getContext());
-        hTile = new Humidity(getContext());
+        mMachineStatusIcon = (ImageView) rootView.findViewById(R.id.machineInfoIcon);
+        mMachineLocation = (TextView) rootView.findViewById(R.id.machineInfoLocation);
+        mMachineSerial = (TextView) rootView.findViewById(R.id.machineInfoSerial);
 
-        machineInfo.setup(setMachineStatusIcon(getArguments().getString("machineStatus", "disconnected")),
-                            getArguments().getString("machineLocation", "Hello"),
-                            getArguments().getString("machineId", DEFAULT));
+        programStatusRecyclerView = (RecyclerView) rootView.findViewById(R.id.event_history_list);
+        programStatusAdapter = new ProgramStatusAdapter();
+        programStatusRecyclerView.setAdapter(programStatusAdapter);
+        programStatusRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-       // cdTile.updateSensorTile();
-       // cdTile.updateSensorTile(getArguments().get);
-        super.onCreateView(inflater, container, savedInstanceState);
+        crashDetectionView = rootView.findViewById(R.id.crashDetectionTile);
+        mCdStatusText = (TextView) crashDetectionView.findViewById(R.id.tileStatusText);
+        mCdStatusRing = (ImageView) crashDetectionView.findViewById(R.id.tileStatusRing);
+
+        vibrationView = rootView.findViewById(R.id.vibrationTile);
+        mVibrationStatusText = (TextView) vibrationView.findViewById(R.id.tileStatusText);
+        mVibrationStatusRing = (ImageView) vibrationView.findViewById(R.id.tileStatusRing);
+
+        temperatureView = rootView.findViewById(R.id.temperatureTile);
+        mTemperatureStatus = (TextView) temperatureView.findViewById(R.id.tileStatusText);
+        mTemperatureRing = (ImageView) temperatureView.findViewById(R.id.tileStatusRing);
+        mTemperatureUnit = (TextView) temperatureView.findViewById(R.id.tileUnitText);
+
+        humidityView = rootView.findViewById(R.id.humidityTile);
+        mHumidityStatus = (TextView) humidityView.findViewById(R.id.tileStatusText);
+        mHumidityRing = (ImageView) humidityView.findViewById(R.id.tileStatusRing);
+
+
+
+
         return rootView;
     }// end onCreate()
 

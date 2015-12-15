@@ -73,24 +73,4 @@ public class SensorTile extends FrameLayout {
                 + tileStatusText.substring(1));
         sensorTileUnitText.setText(tileUnitText);
     }
-
-    /**
-     * Sets the sensor tile's ring color and text
-     * @param ringStatus color to change to
-     * @param textStatus text to change to
-     */
-    protected void setSensorTile(int ringStatus, String textStatus) {
-        sensorTileStatusRing.setImageResource(ringStatus);
-        sensorTileStatusText.setText(textStatus.substring(0, 1).toUpperCase()
-                        + textStatus.substring(1));
-    }
-
-
-    /**
-     * Sets sensor tile unit textfield
-     * @param unitText sensor tile unit text
-     */
-    protected void setSensorTileUnitText(String unitText) {
-        sensorTileUnitText.setText(unitText.toUpperCase());
-    }
 }

@@ -31,26 +31,4 @@ public class Vibration extends SensorTile {
         super(context, attrs, defStyle);
         super.setupSensorTile(TITLE, ICON, UNIT_TEXT, DEFAULT_RING, DEFAULT_TEXT);
     }
-
-    /**
-     * Updates the sensor tile's ring color and text status
-     * @param ringStatus updated resource id for ring color
-     * @param textStatus updated text for the text field
-     */
-    public void updateSensorTile(int ringStatus, String textStatus) {
-//        String status = null;
-//        switch (textStatus) {
-//            case "low":
-//                status = "idle";
-//                break;
-//            case "med":
-//                status = "warning";
-//                break;
-//            case "high":
-//                status = "critical";
-//                break;
-//            default:
-//        }
-        super.setSensorTile(ringStatus, textStatus);
-    }
 }

@@ -31,38 +31,4 @@ public class Temperature extends SensorTile {
         super(context, attrs, defStyle);
         super.setupSensorTile(TITLE, ICON, UNIT_TEXT, DEFAULT_RING, DEFAULT_TEXT);
     }
-
-    /**
-     * Updates the sensor tile's ring color and text status
-     * @param ringStatus updated resource id for ring color
-     * @param textStatus updated text for the text field
-     */
-    public void updateSensorTile(int ringStatus, String textStatus) {
-//        String status = null;
-//        switch (textStatus) {
-//            case "ok":
-//                status = "idle";
-//                break;
-//            case "warning_low":
-//            case "warning_high":
-//                status = "warning";
-//                break;
-//            case "critical_low":
-//            case "critical_high":
-//            case "1hr_swing":
-//            case "24hr_swing":
-//                status = "critical";
-//                break;
-//            default:
-//                status = "disconnected";
-//        }
-        super.setSensorTile(ringStatus, textStatus);
-    }
-
-    /**
-     * Sets the Unit text of the tile
-     */
-    public void setUnitText(String newUnit) {
-       super.setSensorTileUnitText(newUnit);
-    }
 }
