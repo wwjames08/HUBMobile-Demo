@@ -29,10 +29,6 @@ public class HubMachineFragment extends Fragment {
 
     final String DEFAULT = "n/a";
 
-    ImageView mMachineStatusIcon;
-    TextView mMachineLocation;
-    TextView mMachineSerial;
-
     ProgramStatusAdapter programStatusAdapter;
     RecyclerView programStatusRecyclerView;
 
@@ -61,10 +57,7 @@ public class HubMachineFragment extends Fragment {
 
     public static HubMachineFragment newInstance(HubDevice hubDevice) {
         Bundle bundle = new Bundle();
-/*        for(int i = 0; i < 5; i++){
-            timeStamps.add("12:" + i * 10 + ":00pm");
-            eventStatuses.add("Program Running");
-        }*/
+
         HubMachineFragment fragment = new HubMachineFragment();
         bundle.putString("machineId", hubDevice.getMachineID());
         bundle.putString("machineStatus", hubDevice.getMachineStatus());
@@ -91,47 +84,48 @@ public class HubMachineFragment extends Fragment {
         settings = getActivity().getSharedPreferences(APP_PREFS, 0);
         editor = settings.edit();
 
-        machineInfo = new MachineInfo(getContext());
+        machineInfo = new MachineInfo(rootView.getContext());
         cdTile = new CrashDetection(getContext());
         vTile = new Vibration(getContext());
         tTile = new Temperature(getContext());
         hTile = new Humidity(getContext());
 
-       // cdTile.updateSensorTile(getArguments().get);
+        machineInfo.setup(setMachineStatusIcon(getArguments().getString("machineStatus", "disconnected")),
+                            getArguments().getString("machineLocation", "Hello"),
+                            getArguments().getString("machineId", DEFAULT));
 
+       // cdTile.updateSensorTile();
+       // cdTile.updateSensorTile(getArguments().get);
+        super.onCreateView(inflater, container, savedInstanceState);
         return rootView;
     }// end onCreate()
 
     /* Machine Info */
-    private void setMachineInfo(String machineStatus, String machineLocation, String machineText){
-
-        setMachineStatus(machineStatus);
-        mMachineLocation.setText(machineLocation);
-        mMachineSerial.setText(machineText);
-    }
 
     /* Setting the Machine Status Icon and Text Status */
-    private void setMachineStatus(String machineStatus) {
+    private int setMachineStatusIcon(String machineStatus) {
+        int imageResource = 0;
         // Changes the ImageView depending on the Machine Status received
         switch (machineStatus) {
             case "idle":
-                mMachineStatusIcon.setImageResource(R.drawable.ms_idle);
+               imageResource = R.drawable.ms_idle;
                 break;
             case "running":
-                mMachineStatusIcon.setImageResource(R.drawable.ms_running);
+               imageResource = R.drawable.ms_running;
                 break;
             case "warning":
-                mMachineStatusIcon.setImageResource(R.drawable.ms_warning);
+                imageResource = R.drawable.ms_warning;
                 break;
             case "critical":
-                mMachineStatusIcon.setImageResource(R.drawable.ms_error);
+                imageResource = R.drawable.ms_error;
                 break;
             case "disconnected":
-                mMachineStatusIcon.setImageResource(R.drawable.ms_offline);
+                imageResource = R.drawable.ms_offline;
                 break;
             default:
-                mMachineStatusIcon.setImageResource(R.drawable.ms_offline);
+                imageResource = R.drawable.ms_offline;
         }
+        return  imageResource;
     }
         /* Program Status */
 

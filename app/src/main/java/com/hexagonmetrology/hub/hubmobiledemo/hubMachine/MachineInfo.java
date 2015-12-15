@@ -2,6 +2,7 @@ package com.hexagonmetrology.hub.hubmobiledemo.hubMachine;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -14,9 +15,11 @@ import com.hexagonmetrology.hub.hubmobiledemo.R;
  */
 public class MachineInfo extends FrameLayout {
 
-    ImageView mMachineStatusIcon;
-    TextView mMachineLocation;
-    TextView mMachineSerial;
+    private static ImageView mMachineStatusIcon;
+    private static TextView mMachineLocation;
+    private static TextView mMachineSerial;
+
+    private static final String TAG = "MachineInfo";
 
     public MachineInfo(Context context) {
         super(context);
@@ -41,6 +44,8 @@ public class MachineInfo extends FrameLayout {
         mMachineStatusIcon = (ImageView) findViewById(R.id.machineStatusIcon);
         mMachineLocation = (TextView) findViewById(R.id.machineStatusLocation);
         mMachineSerial = (TextView) findViewById(R.id.machineStatusSerial);
+
+        Log.d(TAG, "Initializing...");
     }
 
     /**
@@ -53,6 +58,10 @@ public class MachineInfo extends FrameLayout {
         mMachineStatusIcon.setImageResource(statusIcon);
         mMachineLocation.setText(location);
         mMachineSerial.setText(serial);
+
+        Log.d(TAG, "Setup icon: " + statusIcon);
+        Log.d(TAG, "Setup location: " + location);
+        Log.d(TAG, "Setup serial: " + serial);
     }
 
     /**

@@ -100,7 +100,7 @@ public class MainActivity extends FragmentActivity {
             }
 
             realm.commitTransaction(); //End of write transaction, committing changes/updates
-            super.onCreate(savedInstanceState);
+           // super.onCreate(savedInstanceState);
         } else {
             mPagerAdapter.setData(hubDevices);
             connectedMachineAdapter.setData(hubDevices);
