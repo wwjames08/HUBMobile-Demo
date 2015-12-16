@@ -13,10 +13,6 @@ import android.widget.TextView;
 
 import com.hexagonmetrology.hub.hubmobiledemo.R;
 import com.hexagonmetrology.hub.hubmobiledemo.database.HubDevice;
-import com.hexagonmetrology.hub.hubmobiledemo.sensorTiles.CrashDetection;
-import com.hexagonmetrology.hub.hubmobiledemo.sensorTiles.Humidity;
-import com.hexagonmetrology.hub.hubmobiledemo.sensorTiles.Temperature;
-import com.hexagonmetrology.hub.hubmobiledemo.sensorTiles.Vibration;
 
 /**
  * Fragment: Creates and handles the layout of a connected machine
@@ -50,12 +46,6 @@ public class HubMachineFragment extends Fragment {
     View humidityView;
     TextView mHumidityStatus;
     ImageView mHumidityRing;
-
-    MachineInfo machineInfo;
-    CrashDetection cdTile;
-    Vibration vTile;
-    Temperature tTile;
-    Humidity hTile;
 
 //    static ArrayList<String> timeStamps = new ArrayList<>(),
 //                             eventStatuses = new ArrayList<>();
@@ -115,40 +105,90 @@ public class HubMachineFragment extends Fragment {
         mHumidityStatus = (TextView) humidityView.findViewById(R.id.tileStatusText);
         mHumidityRing = (ImageView) humidityView.findViewById(R.id.tileStatusRing);
 
+        setMachineInfo(getArguments().getString("machineStatus", "disconnected"),
+                getArguments().getString("machineLocation", DEFAULT),
+                getArguments().getString("machineId", DEFAULT));
 
+        programStatusAdapter.setData(getArguments().getStringArrayList("eventTimestamp"),
+                getArguments().getStringArrayList("eventStatus"));
 
+        setSensorTiles(getArguments().getString("cdStatus", DEFAULT),
+                getArguments().getString("vibrationStatus", DEFAULT),
+                getArguments().getString("temperatureValue", DEFAULT),
+                getArguments().getString("temperatureStatus", DEFAULT),
+                getArguments().getString("humidityValue", DEFAULT),
+                getArguments().getString("humidityStatus", DEFAULT));
+
+        mTemperatureUnit.setText(settings.getString("tempUnit", "°C"));
 
         return rootView;
-    }// end onCreate()
+    }// end onCreateView()
+
+    @Override
+    public void onResume(){
+        setMachineInfo(getArguments().getString("machineStatus", "disconnected"),
+                getArguments().getString("machineLocation", DEFAULT),
+                getArguments().getString("machineId", DEFAULT));
+
+        programStatusAdapter.setData(getArguments().getStringArrayList("eventTimestamp"),
+                getArguments().getStringArrayList("eventStatus"));
+
+        setSensorTiles(getArguments().getString("cdStatus", DEFAULT),
+                getArguments().getString("vibrationStatus", DEFAULT),
+                getArguments().getString("temperatureValue", DEFAULT),
+                getArguments().getString("temperatureStatus", DEFAULT),
+                getArguments().getString("humidityValue", DEFAULT),
+                getArguments().getString("humidityStatus", DEFAULT));
+
+        mTemperatureUnit.setText(settings.getString("tempUnit", "°C"));
+        super.onResume();
+    }
 
     /* Machine Info */
+    private void setMachineInfo(String machineStatus, String machineLocation, String machineText){
+
+        setMachineStatus(machineStatus);
+        mMachineLocation.setText(machineLocation);
+        mMachineSerial.setText(machineText);
+    }
 
     /* Setting the Machine Status Icon and Text Status */
-    private int setMachineStatusIcon(String machineStatus) {
-        int imageResource = 0;
+    private void setMachineStatus(String machineStatus) {
         // Changes the ImageView depending on the Machine Status received
         switch (machineStatus) {
             case "idle":
-               imageResource = R.drawable.ms_idle;
+                mMachineStatusIcon.setImageResource(R.drawable.ms_idle);
                 break;
             case "running":
-               imageResource = R.drawable.ms_running;
+                mMachineStatusIcon.setImageResource(R.drawable.ms_running);
                 break;
             case "warning":
-                imageResource = R.drawable.ms_warning;
+                mMachineStatusIcon.setImageResource(R.drawable.ms_warning);
                 break;
             case "critical":
-                imageResource = R.drawable.ms_error;
+                mMachineStatusIcon.setImageResource(R.drawable.ms_error);
                 break;
             case "disconnected":
-                imageResource = R.drawable.ms_offline;
+                mMachineStatusIcon.setImageResource(R.drawable.ms_offline);
                 break;
             default:
-                imageResource = R.drawable.ms_offline;
+                mMachineStatusIcon.setImageResource(R.drawable.ms_offline);
         }
-        return  imageResource;
     }
         /* Program Status */
+
+
+        /* Sensor Tiles */
+
+    private void setSensorTiles(String cdStatus, String vibrationStatus,
+                                String temperatureValue, String temperatureStatus,
+                                String humidityValue, String humidityStatus){
+        setCdTileStatus(cdStatus);
+        setVibrationTileStatus(vibrationStatus);
+        setTemperatureTileStatus(temperatureValue, temperatureStatus);
+        setHumidityTileStatus(humidityValue, humidityStatus);
+    }
+
 
     private void setCdTileStatus(String cdStatus){
         mCdStatusText.setText(String.format("%s%s", cdStatus.substring(0, 1).toUpperCase(), cdStatus.substring(1)));
