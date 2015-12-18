@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -13,15 +14,17 @@ import android.widget.Toast;
 import com.hexagonmetrology.hub.hubmobiledemo.R;
 
 /**
- * Created by jimmy.li on 7/16/2015.
+ * This class handles the Settings of the application.
+ * The user can set the temperature units or navigate into
+ * the notification settings, about, term of use and privacy.
  */
 public class Settings extends Activity {
-    int mNumber;
-    TextView tempUnit;
+    private int mNumber;
+    private String tempUnit;
+    private TextView tempUnitView;
 
     public static final String APP_PREFS = "applicationPrefs";
     SharedPreferences settings;
-    SharedPreferences.Editor editor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,29 +33,30 @@ public class Settings extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
-        tempUnit = (TextView) findViewById(R.id.tempUnit);
+        tempUnitView = (TextView) findViewById(R.id.tempUnit);
+        tempUnit = tempUnitView.getText().toString();
         settings = getSharedPreferences(APP_PREFS, 0);
-        editor = settings.edit();
+        SharedPreferences.Editor editor = settings.edit();
 
-        if(tempUnit.getText().toString() == null){
-            tempUnit.setText(settings.getString("tempUnit", null));
-            String t = tempUnit.getText().toString();
-            if(t == "C°"){
+        //For first time initialization of app, when there
+        //is no value inside the tempUnit the app preference
+        if(tempUnit.equals(null)) {
+            tempUnit = "°C";
+            tempUnitView.setText(tempUnit);
+            mNumber = 0;
+            editor.putString("tempUnit", tempUnit);
+            editor.commit();
+        }else{
+            //If tempUnit equals to C, then set the radio button to C
+            //else if tempUnit equals to F, then set the radio button to F
+            if(tempUnit.equals("°C")){
+                tempUnitView.setText("°C");
+                mNumber = 0;
+            }else if(tempUnit.equals("°F")){
+                tempUnitView.setText("°F");
                 mNumber = 1;
             }
         }
-      /*  if (tempUnit.getText().toString() == null) {
-            mNumber = 0;
-            tempUnit.setText("C°");
-        } else {
-            tempUnit.setText(settings.getString("tempUnit", "C") + "°");
-            if (tempUnit.getText().toString() == "C°") {
-                mNumber = 0;
-            }
-            if (tempUnit.getText().toString() == "F°") {
-                mNumber = 1;
-            }
-        }*/
     }
 
     public void openNotification(View view) {
@@ -75,19 +79,24 @@ public class Settings extends Activity {
     }
 
     public void onClickTempUnit(View view) {
-        AlertDialog.Builder tempChangeAlert = new AlertDialog.Builder(this);
+
+        final AlertDialog.Builder tempChangeAlert = new AlertDialog.Builder(this);
         tempChangeAlert.setTitle("TemperatureTile Units")
                 .setSingleChoiceItems(R.array.tempUnitsArray, mNumber,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                TypedArray unit = getResources().obtainTypedArray(R.array.tempUnitsArray);
+                                tempUnit = unit.getNonResourceString(which);
                                 mNumber = which;
+                                unit.recycle();
                             }
                         })
-                        // Set the action buttons
+                // Set the action buttons
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
+                        SharedPreferences.Editor editor = settings.edit();
                         String temp = null;
                         if (mNumber == 0) {
                             temp = "C";
@@ -95,7 +104,7 @@ public class Settings extends Activity {
                         if (mNumber == 1) {
                             temp = "F";
                         }
-                        tempUnit.setText("°" + temp);
+                        tempUnitView.setText("°" + temp);
                         editor.putString("tempUnit", temp);
 
                         editor.commit();
