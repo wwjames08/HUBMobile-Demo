@@ -36,17 +36,17 @@ public class Settings extends Activity {
         tempUnitView = (TextView) findViewById(R.id.tempUnit);
         settings = getSharedPreferences(APP_PREFS, 0);
         SharedPreferences.Editor editor = settings.edit();
-        tempUnit = settings.getString("tempUnit", "°C");
 
         //For first time initialization of app, when there
         //is no value inside the tempUnit the app preference
-        if(tempUnit.equals(null)) {
+        if(tempUnitView.getText().toString().equals(null)) {
             tempUnit = "°C";
             tempUnitView.setText(tempUnit);
             mNumber = 0;
             editor.putString("tempUnit", tempUnit);
             editor.commit();
         }else{
+            tempUnit = settings.getString("tempUnit", "°C");
             //If tempUnit equals to C, then set the radio button to C
             //else if tempUnit equals to F, then set the radio button to F
             if(tempUnit.equals("°C")){
@@ -61,8 +61,8 @@ public class Settings extends Activity {
 
     @Override
     public void onResume(){
-        settings = getSharedPreferences(APP_PREFS, 0);
         SharedPreferences.Editor editor = settings.edit();
+        tempUnit = settings.getString("tempUnit", "°C");
 
         //If tempUnit equals to C, then set the radio button to C
         //else if tempUnit equals to F, then set the radio button to F
