@@ -23,8 +23,8 @@
     </string-array>
 
     <string-array name="tempUnitsArray">
-        <item>C°</item>
-        <item>F°</item>
+        <item>°C</item>
+        <item>°F</item>
     </string-array>
 
 </resources>

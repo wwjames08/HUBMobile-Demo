@@ -34,9 +34,9 @@ public class Settings extends Activity {
         getActionBar().setHomeButtonEnabled(true);
 
         tempUnitView = (TextView) findViewById(R.id.tempUnit);
-        tempUnit = tempUnitView.getText().toString();
         settings = getSharedPreferences(APP_PREFS, 0);
         SharedPreferences.Editor editor = settings.edit();
+        tempUnit = settings.getString("tempUnit", "°C");
 
         //For first time initialization of app, when there
         //is no value inside the tempUnit the app preference
@@ -57,6 +57,24 @@ public class Settings extends Activity {
                 mNumber = 1;
             }
         }
+    }
+
+    @Override
+    public void onResume(){
+        settings = getSharedPreferences(APP_PREFS, 0);
+        SharedPreferences.Editor editor = settings.edit();
+
+        //If tempUnit equals to C, then set the radio button to C
+        //else if tempUnit equals to F, then set the radio button to F
+        if(tempUnit.equals("°C")){
+            tempUnitView.setText("°C");
+            mNumber = 0;
+        }else if(tempUnit.equals("°F")){
+            tempUnitView.setText("°F");
+            mNumber = 1;
+        }
+
+        super.onResume();
     }
 
     public void openNotification(View view) {
@@ -99,12 +117,12 @@ public class Settings extends Activity {
                         SharedPreferences.Editor editor = settings.edit();
                         String temp = null;
                         if (mNumber == 0) {
-                            temp = "C";
+                            temp = "°C";
                         }
                         if (mNumber == 1) {
-                            temp = "F";
+                            temp = "°F";
                         }
-                        tempUnitView.setText("°" + temp);
+                        tempUnitView.setText(temp);
                         editor.putString("tempUnit", temp);
 
                         editor.commit();
