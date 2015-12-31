@@ -7,6 +7,11 @@ import io.realm.Realm;
 /**
  * Handles the data downloaded from the cloud
  * and parse it to their respective variable holders
+ *
+ * This is where you want to write to your database when you have new data
+ * from the cloud, read from your database when the app needs data and let
+ * the main activity know there is new data so it can refresh the connected
+ * machines with new data.
  */
 public class DataManager {
 

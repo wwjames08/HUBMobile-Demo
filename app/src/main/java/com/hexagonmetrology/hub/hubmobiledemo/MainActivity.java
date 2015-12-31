@@ -28,7 +28,7 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 /**
- * Start of the application and where everything goes through
+ * Start of the application
  */
 public class MainActivity extends FragmentActivity {
 
@@ -71,7 +71,9 @@ public class MainActivity extends FragmentActivity {
         connectedMachineRecyclerView.setAdapter(connectedMachineAdapter);
         connectedMachineRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        /* Creates HubDevice objects for the database */
+        /* Creates HubDevice objects for the database
+         * Can be deleted once the cloud stuff is setup
+         * JUST FOR TESTING */
         realm = Realm.getInstance(this);
         RealmResults<HubDevice> hubDevices = realm.where(HubDevice.class).findAll();
         RealmResults<EventHistory> eventHistories = realm.where(EventHistory.class).findAll();
@@ -168,6 +170,9 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
+    /**
+     * When the activity is destroyed
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -214,32 +219,6 @@ public class MainActivity extends FragmentActivity {
             notifyDataSetChanged();
         }
     }
-
-    /*************************************Realm Stuff*******************************************/
-
-    private void addHubDevice(String id, String location, String type){
-        realm.beginTransaction();
-
-        HubDevice hubDevice = realm.createObject(HubDevice.class);
-        hubDevice.setMachineID(id);
-        hubDevice.setMachineLocation(location);
-        hubDevice.setMachineType(type);
-
-
-        realm.commitTransaction();
-    }
-
-    private void updateHubDevice(int position){
-
-    }
-
-    private void deleteHubDevice(int position){
-
-    }
-
-
-    /**************************************Realm End******************************************/
-
 
     /**
      * Other Stuff

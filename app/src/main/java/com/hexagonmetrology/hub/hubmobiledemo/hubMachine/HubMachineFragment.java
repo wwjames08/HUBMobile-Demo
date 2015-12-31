@@ -124,6 +124,9 @@ public class HubMachineFragment extends Fragment {
         return rootView;
     }// end onCreateView()
 
+    /**
+     * When the fragment is resumed
+     */
     @Override
     public void onResume(){
         setMachineInfo(getArguments().getString("machineStatus", "disconnected"),
@@ -176,7 +179,8 @@ public class HubMachineFragment extends Fragment {
         }
     }
         /* Program Status */
-
+        //Here you'll want to implement the code for the recyclerview to
+        //list the events that have pasted.
 
         /* Sensor Tiles */
 
